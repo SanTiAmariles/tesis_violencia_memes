@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisión visual LGBTIQ+ | EXIST 2024</title>
+  <style>
+    :root { --ink:#17202a; --muted:#68737d; --paper:#f5f2eb; --panel:#fffdf8; --line:#d9d3c8; --accent:#d85b38; --accent-dark:#9f351e; --yes:#27795a; --no:#8d3c3c; --doubt:#9a6b16; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:radial-gradient(circle at 15% 0%, #fff8dc 0, transparent 32rem), var(--paper); font:15px/1.5 Georgia, serif; }
+    header { padding:34px clamp(18px,5vw,72px) 24px; border-bottom:1px solid var(--line); }
+    h1 { margin:0 0 7px; max-width:850px; font:700 clamp(28px,4vw,48px)/1.05 'Trebuchet MS', sans-serif; letter-spacing:0; }
+    .subtitle { max-width:780px; margin:0; color:var(--muted); font-size:17px; }
+    .toolbar { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:13px clamp(18px,5vw,72px); background:rgba(245,242,235,.94); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); font-family:'Trebuchet MS', sans-serif; }
+    button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 15px; border-radius:4px; cursor:pointer; font:700 13px 'Trebuchet MS', sans-serif; }
+    button:hover { background:var(--accent-dark); border-color:var(--accent-dark); }
+    button.secondary { color:var(--ink); background:transparent; }
+    #status { color:var(--muted); margin-left:auto; font-weight:700; }
+    main { width:min(1180px, 90vw); margin:28px auto 70px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:18px; }
+    article { display:flex; flex-direction:column; min-width:0; background:var(--panel); border:1px solid var(--line); border-radius:7px; overflow:hidden; box-shadow:0 7px 20px rgba(49,39,25,.06); }
+    .media { display:grid; place-items:center; min-height:245px; padding:12px; background:#e9e4d9; }
+    .media img { display:block; width:100%; max-height:330px; object-fit:contain; border-radius:3px; }
+    .media img.broken { display:none; }
+    .image-fallback { display:none; color:var(--muted); text-align:center; font:13px 'Trebuchet MS', sans-serif; }
+    .image-fallback.visible { display:block; }
+    .content { padding:16px; }
+    .id-row { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:10px; font:700 14px 'Trebuchet MS', sans-serif; }
+    .id { color:var(--accent-dark); }
+    .exist { padding:4px 8px; border-radius:12px; color:white; background:var(--muted); font-size:11px; }
+    .exist.yes { background:var(--yes); } .exist.no { background:var(--no); }
+    .label { margin:13px 0 5px; color:var(--muted); font:700 11px 'Trebuchet MS', sans-serif; text-transform:uppercase; letter-spacing:0; }
+    .text { min-height:52px; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .terms { margin:0; color:var(--accent-dark); font-weight:700; overflow-wrap:anywhere; }
+    fieldset { margin:16px 0 0; padding:11px; border:1px solid var(--line); border-radius:5px; }
+    legend { padding:0 5px; color:var(--muted); font:700 11px 'Trebuchet MS', sans-serif; text-transform:uppercase; }
+    .choices { display:flex; flex-wrap:wrap; gap:8px; }
+    .choice { flex:1 1 70px; position:relative; }
+    .choice input { position:absolute; opacity:0; }
+    .choice label { display:block; padding:8px 5px; text-align:center; border:1px solid var(--line); border-radius:4px; cursor:pointer; font:700 12px 'Trebuchet MS', sans-serif; }
+    .choice input:checked + label { color:white; border-color:var(--ink); background:var(--ink); }
+    .choice input:focus-visible + label { outline:3px solid #efb27f; outline-offset:2px; }
+    textarea { display:block; width:100%; min-height:72px; resize:vertical; padding:9px; border:1px solid var(--line); border-radius:4px; color:var(--ink); background:#fff; font:14px/1.4 Georgia, serif; }
+    .empty { padding:40px; text-align:center; color:var(--muted); }
+    @media (max-width:600px) { .grid { grid-template-columns:1fr; } #status { width:100%; margin-left:0; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Revisión visual de candidatos LGBTIQ+</h1>
+    <p class="subtitle">Clasificación exploratoria de referencia LGBTIQ+. Selecciona únicamente <strong>SI</strong>, <strong>NO</strong> o <strong>DUDOSO</strong>. Esta interfaz no evalúa violencia simbólica, LGBTfobia, odio ni discriminación.</p>
+  </header>
+  <div class="toolbar">
+    <button id="exportBtn" type="button">Guardar decisiones CSV</button>
+    <button id="clearBtn" class="secondary" type="button">Limpiar decisiones</button>
+    <span id="status">Cargando candidatos...</span>
+  </div>
+  <main><section id="grid" class="grid" aria-live="polite"></section></main>
+  <script>
+    const sourceCsv = 'candidatos_lgbtiq_revision.csv';
+    const imageRoot = '../../../dataset/raw/EXIST2021-2025_datasets/2024%20EXIST/EXIST%202024%20Memes%20Dataset/training/memes/';
+    const outputFields = ['id_EXIST','texto','imagen','path_memes','etiqueta_EXIST','termino_detectado','referencia_lgbtiq','observaciones'];
+    let records = [];
+
+    function parseCsv(text) {
+      const rows = [], row = []; let field = '', quoted = false;
+      for (let i = 0; i < text.length; i++) { const char = text[i], next = text[i + 1];
+        if (char === '"' && quoted && next === '"') { field += '"'; i++; }
+        else if (char === '"') quoted = !quoted;
+        else if (char === ',' && !quoted) { row.push(field); field = ''; }
+        else if ((char === '\n' || char === '\r') && !quoted) { if (char === '\r' && next === '\n') i++; row.push(field); if (row.some(value => value !== '')) rows.push(row.splice(0)); field = ''; }
+        else field += char;
+      }
+      if (field || row.length) { row.push(field); rows.push(row); }
+      const headers = rows.shift().map(value => value.replace(/^\uFEFF/, ''));
+      return rows.map(values => Object.fromEntries(headers.map((key, i) => [key, values[i] || ''])));
+    }
+
+    function csvCell(value) { const text = String(value ?? ''); return '"' + text.replaceAll('"', '""') + '"'; }
+    function imageUrl(path) { const filename = String(path || '').split(/[\\/]/).pop(); return imageRoot + encodeURIComponent(filename); }
+    function setStatus(message) { document.querySelector('#status').textContent = message; }
+    function makeCard(record, index) {
+      const card = document.createElement('article');
+      const safeId = String(record.id_EXIST).replace(/[^a-zA-Z0-9_-]/g, '_');
+      const label = record.etiqueta_EXIST === 'YES' ? 'yes' : record.etiqueta_EXIST === 'NO' ? 'no' : '';
+      card.innerHTML = `<div class="media"><img src="${imageUrl(record.path_memes)}" alt="Meme ${record.id_EXIST}" loading="lazy"><div class="image-fallback">Imagen no cargada<br><small>${record.path_memes}</small></div></div><div class="content"><div class="id-row"><span class="id">ID_EXIST ${record.id_EXIST}</span><span class="exist ${label}">EXIST: ${record.etiqueta_EXIST}</span></div><div class="label">Texto</div><p class="text"></p><div class="label">Término detectado</div><p class="terms"></p><fieldset><legend>referencia_lgbtiq</legend><div class="choices">${['SI','NO','DUDOSO'].map(value => `<span class="choice"><input type="radio" id="${safeId}-${value}" name="ref-${safeId}" value="${value}"><label for="${safeId}-${value}">${value}</label></span>`).join('')}</div></fieldset><div class="label">Observaciones</div><textarea aria-label="Observaciones para ${record.id_EXIST}" placeholder="Añadir observaciones de la revisión humana..."></textarea></div>`;
+      card.querySelector('.text').textContent = record.texto;
+      card.querySelector('.terms').textContent = record.termino_detectado;
+      const img = card.querySelector('img');
+      img.addEventListener('error', () => { img.classList.add('broken'); card.querySelector('.image-fallback').classList.add('visible'); });
+      record._card = card; record._safeId = safeId; record._index = index;
+      return card;
+    }
+
+    function exportCsv() {
+      const rows = records.map(record => { const selected = record._card.querySelector(`input[name="ref-${record._safeId}"]:checked`); const note = record._card.querySelector('textarea').value; return outputFields.map(field => field === 'referencia_lgbtiq' ? (selected ? selected.value : '') : field === 'observaciones' ? note : record[field] || ''); });
+      const csv = [outputFields, ...rows].map(row => row.map(csvCell).join(',')).join('\r\n') + '\r\n';
+      const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'})); link.download = 'candidatos_lgbtiq_revision_completado.csv'; link.click(); URL.revokeObjectURL(link.href);
+      setStatus('CSV exportado: candidatos_lgbtiq_revision_completado.csv');
+    }
+
+    function clearDecisions() { records.forEach(record => { record._card.querySelectorAll('input').forEach(input => input.checked = false); record._card.querySelector('textarea').value = ''; }); setStatus(`${records.length} candidatos cargados | decisiones limpiadas`); }
+    document.querySelector('#exportBtn').addEventListener('click', exportCsv);
+    document.querySelector('#clearBtn').addEventListener('click', clearDecisions);
+    fetch(sourceCsv).then(response => { if (!response.ok) throw new Error('No se pudo leer el CSV'); return response.text(); }).then(text => { records = parseCsv(text); const grid = document.querySelector('#grid'); records.forEach((record, index) => grid.appendChild(makeCard(record, index))); setStatus(`${records.length} candidatos cargados | 0 decisiones registradas`); }).catch(error => { document.querySelector('#grid').innerHTML = '<p class="empty">No se pudo cargar el CSV automáticamente. Abre esta carpeta mediante un servidor local y vuelve a cargar la página.</p>'; setStatus(error.message); });
+  </script>
+</body>
+</html>

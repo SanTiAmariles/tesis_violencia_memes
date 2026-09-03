@@ -1,0 +1,27 @@
+RESUMEN DE DUPLICADOS CONFLICTIVOS EXIST 2024
+===============================================
+
+Número de grupos conflictivos: 8
+Número total de IDs involucrados: 16
+Grupos con tratamiento objetivo posible: 8
+Grupos que requieren revisión manual: 0
+
+Recomendación general:
+Conservar ambos registros. Son IDs distintos con imágenes binarias idénticas,
+pero no hay evidencia objetiva para eliminar uno. La contradicción YES/NO de
+gold_hard debe conservarse y documentarse; gold_soft sirve como evidencia
+comparativa, no como reclasificación automática.
+
+Detalle por grupo:
+- DUP-CONFLICT-001: IDs 110850, 111097; 110850=YES, 111097=NO; CONSERVAR AMBOS
+- DUP-CONFLICT-002: IDs 111051, 111245; 111051=YES, 111245=NO; CONSERVAR AMBOS
+- DUP-CONFLICT-003: IDs 110853, 111087; 110853=YES, 111087=NO; CONSERVAR AMBOS
+- DUP-CONFLICT-004: IDs 110688, 111143; 110688=YES, 111143=NO; CONSERVAR AMBOS
+- DUP-CONFLICT-005: IDs 110581, 111123; 110581=YES, 111123=NO; CONSERVAR AMBOS
+- DUP-CONFLICT-006: IDs 111127, 111524; 111127=NO, 111524=YES; CONSERVAR AMBOS
+- DUP-CONFLICT-007: IDs 111015, 111344; 111015=NO, 111344=YES; CONSERVAR AMBOS
+- DUP-CONFLICT-008: IDs 110053, 111814; 110053=YES, 111814=NO; CONSERVAR AMBOS
+
+Limitaciones:
+- El análisis compara hashes y metadatos; no interpreta el contenido de los memes.
+- No se modificaron imágenes, JSON ni dataset_exist2024_es_labeled.csv.

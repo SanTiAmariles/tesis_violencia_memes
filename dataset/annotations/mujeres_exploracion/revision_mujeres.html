@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisión exploratoria de memes relacionados con mujeres</title>
+  <style>
+    :root { --ink:#1e2930; --muted:#69747a; --paper:#f2eee6; --panel:#fffdf8; --line:#d7d0c4; --accent:#b94f35; --accent-dark:#873522; --green:#2b765c; --blue:#315c76; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:radial-gradient(circle at 12% 0,#fff7d6 0,transparent 34rem),var(--paper); font:16px/1.5 Georgia,serif; }
+    header { padding:34px clamp(18px,6vw,100px) 26px; border-bottom:1px solid var(--line); }
+    h1 { max-width:850px; margin:0 0 9px; font:700 clamp(28px,4.5vw,54px)/1.02 'Trebuchet MS',sans-serif; }
+    .subtitle { max-width:830px; margin:0; color:var(--muted); font-size:17px; }
+    .notice { margin-top:15px; max-width:830px; padding:11px 14px; border-left:4px solid var(--accent); background:#fff9e8; color:#5e4936; font-size:14px; }
+    .toolbar { position:sticky; top:0; z-index:3; display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px clamp(18px,6vw,100px); background:rgba(242,238,230,.95); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); font-family:'Trebuchet MS',sans-serif; }
+    button { border:1px solid var(--ink); border-radius:4px; padding:10px 14px; background:var(--ink); color:#fff; cursor:pointer; font:700 13px 'Trebuchet MS',sans-serif; }
+    button:hover { background:var(--accent-dark); border-color:var(--accent-dark); }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:disabled { opacity:.4; cursor:not-allowed; }
+    #progress { margin-left:auto; color:var(--muted); font-weight:700; }
+    main { width:min(1000px,90vw); margin:30px auto 70px; }
+    .empty { padding:45px; text-align:center; color:var(--muted); }
+    .record { display:grid; grid-template-columns:minmax(300px,1fr) minmax(300px,1fr); gap:0; overflow:hidden; background:var(--panel); border:1px solid var(--line); border-radius:7px; box-shadow:0 10px 28px rgba(45,35,24,.08); }
+    .media { display:grid; place-items:center; min-height:480px; padding:18px; background:#e5e0d5; }
+    .media img { display:block; width:100%; max-height:620px; object-fit:contain; border-radius:3px; }
+    .fallback { display:none; text-align:center; color:var(--muted); font:13px 'Trebuchet MS',sans-serif; }
+    .fallback.visible { display:block; }
+    .details { padding:25px; }
+    .id-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; font:700 14px 'Trebuchet MS',sans-serif; }
+    .id { color:var(--accent-dark); font-size:17px; }
+    .exist { padding:4px 9px; border-radius:12px; color:#fff; background:var(--muted); font-size:11px; }
+    .exist.yes { background:var(--green); } .exist.no { background:#884b4b; }
+    .label { margin:18px 0 6px; color:var(--muted); font:700 11px 'Trebuchet MS',sans-serif; text-transform:uppercase; }
+    .text { max-height:235px; overflow:auto; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .terms { margin:0; color:var(--accent-dark); font-weight:700; overflow-wrap:anywhere; }
+    .path { color:var(--muted); font:12px 'Trebuchet MS',sans-serif; overflow-wrap:anywhere; }
+    fieldset { margin:22px 0 0; padding:13px; border:1px solid var(--line); border-radius:5px; }
+    legend { padding:0 5px; color:var(--muted); font:700 11px 'Trebuchet MS',sans-serif; text-transform:uppercase; }
+    .choices { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    select, textarea { width:100%; border:1px solid var(--line); border-radius:4px; padding:10px; color:var(--ink); background:#fff; font:15px Georgia,serif; }
+    textarea { min-height:95px; resize:vertical; }
+    .save-line { display:flex; align-items:center; gap:9px; margin-top:16px; color:var(--muted); font:13px 'Trebuchet MS',sans-serif; }
+    .save-dot { width:9px; height:9px; border-radius:50%; background:#aaa; }
+    .save-dot.saved { background:var(--green); }
+    @media (max-width:700px) { .record { grid-template-columns:1fr; } .media { min-height:300px; } #progress { width:100%; margin-left:0; } .details { padding:19px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Revisión exploratoria de memes relacionados con mujeres</h1>
+    <p class="subtitle">Revisa cada candidato considerando el meme completo: imagen, texto y contexto. Esta herramienta sirve para seleccionar casos y probar el protocolo de anotación.</p>
+    <div class="notice"><strong>Importante:</strong> una coincidencia léxica no implica referencia a mujeres ni violencia simbólica. Los campos de clasificación son provisionales y deben completarse mediante revisión humana.</div>
+  </header>
+  <div class="toolbar">
+    <button id="previous" type="button">Anterior</button>
+    <button id="next" type="button">Siguiente</button>
+    <button id="save" type="button">Guardar cambios</button>
+    <button id="export" type="button">Exportar CSV</button>
+    <button id="clear" class="secondary" type="button">Limpiar actual</button>
+    <span id="progress">Cargando...</span>
+  </div>
+  <main><section id="app" class="empty">Cargando candidatos...</section></main>
+  <script>
+    const sourceCsv = 'candidatos_mujeres_revision.csv';
+    const imageRoot = '../../../dataset/raw/EXIST2021-2025_datasets/2024%20EXIST/EXIST%202024%20Memes%20Dataset/training/memes/';
+    const fields = ['ID','texto','etiqueta_EXIST','termino(s)_coincidente(s)','ruta_meme','referencia_mujeres','criterio_violencia','clasificacion_preliminar','dificultad','justificacion','observaciones'];
+    const reviewFields = ['referencia_mujeres','criterio_violencia','clasificacion_preliminar','dificultad','justificacion','observaciones'];
+    let records = [], currentIndex = 0, card;
+    const storageKey = 'revision-mujeres-exploracion-v1';
+
+    function parseCsv(text) {
+      const rows = [], current = []; let value = '', quoted = false;
+      for (let i = 0; i < text.length; i++) { const char = text[i], next = text[i + 1];
+        if (char === '"' && quoted && next === '"') { value += '"'; i++; }
+        else if (char === '"') quoted = !quoted;
+        else if (char === ',' && !quoted) { current.push(value); value = ''; }
+        else if ((char === '\n' || char === '\r') && !quoted) { if (char === '\r' && next === '\n') i++; current.push(value); value = ''; if (current.some(item => item !== '')) rows.push(current.splice(0)); }
+        else value += char;
+      }
+      if (value || current.length) { current.push(value); rows.push(current); }
+      const headers = rows.shift().map(item => item.replace(/^\uFEFF/, ''));
+      return rows.map(row => Object.fromEntries(headers.map((header, index) => [header, row[index] || ''])));
+    }
+
+    function loadSaved() { try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch { return {}; } }
+    function saveSaved() { localStorage.setItem(storageKey, JSON.stringify(Object.fromEntries(records.map(record => [record.ID, record.review])))); }
+    function csvCell(value) { return '"' + String(value ?? '').replaceAll('"', '""') + '"'; }
+    function imageUrl(path) { return imageRoot + encodeURIComponent(String(path || '').split(/[\\/]/).pop()); }
+    function setProgress() { const reviewed = records.filter(record => Object.values(record.review).some(Boolean)).length; document.querySelector('#progress').textContent = `${currentIndex + 1} / ${records.length} | ${reviewed} con datos guardados`; }
+    function selectControl(label, key, values) { const wrapper = document.createElement('div'); const title = document.createElement('div'); title.className = 'label'; title.textContent = label; const select = document.createElement('select'); select.dataset.key = key; const blank = document.createElement('option'); blank.value = ''; blank.textContent = 'Seleccionar...'; select.appendChild(blank); values.forEach(value => { const option = document.createElement('option'); option.value = value; option.textContent = value; select.appendChild(option); }); wrapper.append(title, select); return wrapper; }
+    function render() {
+      const record = records[currentIndex]; const root = document.querySelector('#app'); root.className = 'record'; root.replaceChildren();
+      const media = document.createElement('div'); media.className = 'media'; const img = document.createElement('img'); img.alt = `Meme ${record.ID}`; img.src = imageUrl(record.ruta_meme); img.loading = 'eager'; const fallback = document.createElement('div'); fallback.className = 'fallback'; fallback.textContent = `Imagen no cargada: ${record.ruta_meme}`; img.addEventListener('error', () => { img.style.display = 'none'; fallback.className = 'fallback visible'; }); media.append(img, fallback);
+      const details = document.createElement('div'); details.className = 'details'; const idRow = document.createElement('div'); idRow.className = 'id-row'; const id = document.createElement('span'); id.className = 'id'; id.textContent = `ID ${record.ID}`; const exist = document.createElement('span'); exist.className = `exist ${record.etiqueta_EXIST.toLowerCase()}`; exist.textContent = `EXIST: ${record.etiqueta_EXIST}`; idRow.append(id, exist); details.appendChild(idRow);
+      const textLabel = document.createElement('div'); textLabel.className = 'label'; textLabel.textContent = 'Texto'; const text = document.createElement('p'); text.className = 'text'; text.textContent = record.texto; details.append(textLabel, text); const termLabel = document.createElement('div'); termLabel.className = 'label'; termLabel.textContent = 'Término(s) coincidente(s)'; const terms = document.createElement('p'); terms.className = 'terms'; terms.textContent = record['termino(s)_coincidente(s)']; details.append(termLabel, terms); const path = document.createElement('div'); path.className = 'path'; path.textContent = record.ruta_meme; details.appendChild(path);
+      const reference = document.createElement('fieldset'); const legend = document.createElement('legend'); legend.textContent = 'Referencia a mujeres'; const choices = document.createElement('div'); choices.className = 'choices'; ['SI','NO','DUDOSO'].forEach(value => { const option = document.createElement('label'); const input = document.createElement('input'); input.type = 'radio'; input.name = 'referencia_mujeres'; input.value = value; input.checked = record.review.referencia_mujeres === value; input.addEventListener('change', () => update('referencia_mujeres', value)); option.append(input, document.createTextNode(` ${value}`)); choices.appendChild(option); }); reference.append(legend, choices); details.appendChild(reference);
+      details.appendChild(selectControl('Clasificación preliminar', 'clasificacion_preliminar', ['YES','NO','DUDOSO'])); details.appendChild(selectControl('Dificultad', 'dificultad', ['BAJA','MEDIA','ALTA'])); const criterionLabel = document.createElement('div'); criterionLabel.className = 'label'; criterionLabel.textContent = 'Criterio de violencia simbólica'; const criterion = document.createElement('textarea'); criterion.dataset.key = 'criterio_violencia'; criterion.placeholder = 'Registrar el criterio o dejar vacío para decidirlo después.'; criterion.value = record.review.criterio_violencia; criterion.addEventListener('input', () => update('criterio_violencia', criterion.value)); details.append(criterionLabel, criterion); const justificationLabel = document.createElement('div'); justificationLabel.className = 'label'; justificationLabel.textContent = 'Justificación'; const justification = document.createElement('textarea'); justification.dataset.key = 'justificacion'; justification.placeholder = 'Explicar brevemente la decisión, si corresponde.'; justification.value = record.review.justificacion; justification.addEventListener('input', () => update('justificacion', justification.value)); details.append(justificationLabel, justification); const notesLabel = document.createElement('div'); notesLabel.className = 'label'; notesLabel.textContent = 'Observaciones'; const notes = document.createElement('textarea'); notes.dataset.key = 'observaciones'; notes.placeholder = 'Notas de la revisión humana...'; notes.value = record.review.observaciones; notes.addEventListener('input', () => update('observaciones', notes.value)); details.append(notesLabel, notes); const saved = document.createElement('div'); saved.className = 'save-line'; saved.innerHTML = '<span class="save-dot saved"></span> Cambios guardados en este navegador'; details.appendChild(saved); root.append(media, details); card = root; card.querySelectorAll('select').forEach(select => { select.value = record.review[select.dataset.key] || ''; select.addEventListener('change', () => update(select.dataset.key, select.value)); }); document.querySelector('#previous').disabled = currentIndex === 0; document.querySelector('#next').disabled = currentIndex === records.length - 1; setProgress(); }
+    function update(key, value) { records[currentIndex].review[key] = value; saveSaved(); setProgress(); }
+    function clearCurrent() { records[currentIndex].review = {}; saveSaved(); render(); }
+    function exportCsv() { const output = [fields, ...records.map(record => fields.map(field => field in record ? record[field] : record.review[field] || ''))].map(row => row.map(csvCell).join(',')).join('\r\n') + '\r\n'; const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([output], {type:'text/csv;charset=utf-8'})); link.download = 'candidatos_mujeres_revision_completado.csv'; link.click(); URL.revokeObjectURL(link.href); }
+    document.querySelector('#previous').addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; render(); window.scrollTo(0,0); } }); document.querySelector('#next').addEventListener('click', () => { if (currentIndex < records.length - 1) { currentIndex++; render(); window.scrollTo(0,0); } }); document.querySelector('#save').addEventListener('click', () => { saveSaved(); setProgress(); }); document.querySelector('#export').addEventListener('click', exportCsv); document.querySelector('#clear').addEventListener('click', clearCurrent);
+    fetch(sourceCsv).then(response => { if (!response.ok) throw new Error('No se pudo cargar el CSV'); return response.text(); }).then(text => { const saved = loadSaved(); records = parseCsv(text).map(record => ({...record, review: saved[record.ID] || {}})); render(); }).catch(error => { document.querySelector('#app').textContent = `${error.message}. Ejecuta un servidor local para abrir esta interfaz.`; });
+  </script>
+</body>
+</html>

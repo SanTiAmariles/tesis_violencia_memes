@@ -1,0 +1,68 @@
+﻿RESUMEN DE CANDIDATOS POTENCIALMENTE RELACIONADOS CON CONTENIDO LGBTIQ+
+====================================================================
+
+Este informe describe una selección exploratoria por coincidencia léxica.
+No constituye una clasificación automática de contenido LGBTIQ+, LGBTfobia,
+odio, discriminación, violencia ni violencia simbólica. La determinación
+requiere revisión humana y visual conforme al protocolo de la tesis.
+
+Origen y procedimiento de selección:
+- Se leyó el archivo dataset_exist2024_es_labeled.csv, que contiene 1.712
+	memes españoles y las columnas id_EXIST, texto, imagen, path_memes y
+	etiqueta_EXIST.
+- La búsqueda se realizó exclusivamente sobre la columna texto. No se
+	buscaron términos en id_EXIST, etiqueta_EXIST, imagen ni path_memes; estos
+	campos solo se conservaron para identificar y contextualizar cada candidato.
+- El vocabulario exacto utilizado está conservado en el archivo
+	vocabulario_lgbtiq_exploratorio.txt. Incluye cuatro grupos: orientación
+	sexual (por ejemplo homosexual, gay, lesbiana, bisexual, pansexual, asexual,
+	queer y heterosexual); identidad de género (trans, transexual, transgender,
+	persona trans, travesti, no binario, género fluido, intersexual); expresiones
+	relacionadas (LGBT, LGBTI, LGBTQ, LGBTIQ+, orgullo gay, pride, matrimonio
+	igualitario, pareja del mismo sexo, drag, transformista y arcoíris); y
+	términos coloquiales o potencialmente despectivos (marica, maricón, puto,
+	puta, joto, marimacho, bollera, tortillera, afeminado, amanerado, homofobia,
+	transfobia, lesbofobia, bifobia y lgbtifobia, entre otros).
+- Se comparó una versión auxiliar normalizada del texto: sin diferencias de
+	mayúsculas, sin tildes y con guiones tratados como espacios. Se exigieron
+	límites de palabra y se permitieron espacios variables en expresiones.
+	El texto original nunca se modificó.
+- Las 74 filas son, por tanto, candidatos generados por coincidencia léxica
+	textual. No equivalen automáticamente a referencias LGBTIQ+ ni a LGBTfobia,
+	odio, discriminación, violencia o violencia simbólica.
+
+Total de candidatos: 74
+Coincidencias totales: 79
+Distribución de etiqueta_EXIST: 53 YES / 21 NO
+
+Términos encontrados y frecuencia:
+puta: 15
+gay: 13
+marimacho: 10
+putas: 10
+trans: 8
+heterosexual: 3
+lesbiana: 3
+no binario: 3
+joto: 2
+mismo sexo: 2
+afeminado: 1
+genero fluido: 1
+homofobia: 1
+homosexualidad: 1
+jotos: 1
+lesbiano: 1
+LGBT: 1
+pride: 1
+transexual: 1
+travesti: 1
+
+IDs de los 74 candidatos:
+110088, 110148, 110241, 110283, 110321, 110538, 110595, 110674, 110718, 110730, 110740, 110755, 110770, 110779, 110787, 110818, 110872, 110902, 110909, 110969, 110983, 111006, 111008, 111038, 111048, 111058, 111137, 111185, 111201, 111221, 111249, 111262, 111263, 111264, 111265, 111266, 111267, 111268, 111272, 111273, 111275, 111276, 111299, 111314, 111320, 111346, 111403, 111529, 111558, 111585, 111630, 111665, 111666, 111684, 111685, 111686, 111687, 111688, 111689, 111691, 111693, 111694, 111695, 111696, 111698, 111699, 111701, 111703, 111772, 111776, 111807, 111896, 111984, 112007
+
+Limitaciones:
+- No se hizo OCR y no se asignaron etiquetas de violencia_simbolica, LGBTfobia, odio o discriminación.
+- Una referencia presente únicamente en la imagen no puede detectarse mediante este archivo de texto.
+- Mayúsculas, tildes y guiones se normalizaron solo para la búsqueda; el texto original se conservó.
+- Errores OCR, emojis, abreviaturas y términos ambiguos pueden producir falsos positivos o falsos negativos.
+- Los términos detectados son candidatos para revisión, no conclusiones sobre el contenido del meme.

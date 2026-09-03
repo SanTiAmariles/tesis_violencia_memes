@@ -1,0 +1,111 @@
+# Vocabulario exploratorio de referencias potencialmente relacionadas con LGBTIQ+
+# Uso: búsqueda léxica inicial; no es una lista de insultos ni un criterio de violencia.
+# Una línea = un término o expresión. La comparación ignora mayúsculas y tildes.
+
+[orientacion_sexual]
+homosexual
+homosexualidad
+gay
+lesbiana
+lesbiano
+lesbianismo
+bisexual
+bisexualidad
+bi
+pansexual
+pansexualidad
+asexual
+asexualidad
+queer
+heterosexual
+heterosexualidad
+orientacion sexual
+orientación sexual
+
+[identidad_de_genero]
+trans
+transexual
+transexualidad
+transgenero
+transgénero
+transgender
+persona trans
+hombre trans
+mujer trans
+travesti
+travestismo
+no binario
+no-binario
+nobinario
+genero fluido
+género fluido
+identidad de genero
+identidad de género
+intersexual
+intersex
+
+[expresiones_relacionadas]
+LGBT
+LGBTI
+LGBTQ
+LGBTQ+
+LGBTIQ
+LGBTIQ+
+LGTB
+LGTBI
+orgullo gay
+orgullo lgbtiq
+pride
+salir del armario
+salir del closet
+matrimonio igualitario
+boda igualitaria
+pareja del mismo sexo
+mismo sexo
+familia homoparental
+adopcion homoparental
+adopción homoparental
+drag queen
+drag king
+drag
+transformista
+arcoiris
+arcoíris
+bandera LGBT
+bandera arcoiris
+bandera arcoíris
+
+[coloquiales_o_potencialmente_despectivos]
+marica
+maricas
+maricon
+maricón
+maricones
+puto
+puta
+putos
+putas
+joto
+jotos
+marimacho
+machorra
+bollera
+tortillera
+invertido
+invertida
+sodomita
+afeminado
+afeminada
+amanerado
+amanerada
+travelo
+travesti de mierda
+homofobo
+homófobo
+homofobia
+transfobo
+tránsfobo
+transfobia
+lesbofobia
+bifobia
+lgbtifobia

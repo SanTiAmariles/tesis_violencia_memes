@@ -1,0 +1,184 @@
+# Vocabulario exploratorio de referencias potencialmente relacionadas con mujeres
+# Uso: selección léxica inicial para revisión humana; no define violencia simbólica.
+# Una línea = un término o expresión. Se comparan mayúsculas y tildes de forma tolerante.
+
+[personas_y_formas]
+mujer
+mujeres
+mujeriego
+mujeriegos
+femina
+fémina
+femenina
+femenino
+feminidad
+feminismo
+feminista
+feministas
+chica
+chicas
+muchacha
+muchachas
+señora
+señoras
+señorita
+damas
+dama
+ella
+ellas
+niña
+niñas
+adolescente
+madre
+mamá
+mama
+mamas
+hija
+hijas
+hermana
+hermanas
+abuela
+abuelas
+novia
+novias
+esposa
+esposas
+pareja
+embarazada
+embarazadas
+
+[genero_y_roles]
+género
+genero
+identidad de género
+identidad de genero
+rol de género
+roles de género
+estereotipo de género
+estereotipos de género
+perspectiva de género
+brecha de género
+igualdad de género
+violencia de género
+liberación femenina
+empoderamiento femenino
+ama de casa
+madre soltera
+mujer trabajadora
+mujer independiente
+mujer fuerte
+mujer real
+mujer ideal
+
+[sexualidad_y_cuerpo]
+sexo femenino
+órgano sexual femenino
+cuerpo femenino
+cuerpos femeninos
+sexualidad femenina
+orientación sexual
+lesbiana
+lesbianas
+homosexualidad
+bisexual
+vagina
+vaginas
+vulva
+vulvas
+útero
+utero
+ovario
+ovarios
+menstruación
+menstruacion
+menstruar
+menopausia
+embarazo
+parto
+lactancia
+seno
+senos
+pechos
+
+[vida_social_y_derechos]
+derechos de las mujeres
+día de la mujer
+dia de la mujer
+8 de marzo
+8m
+Día Internacional de la Mujer
+Dia Internacional de la Mujer
+movimiento feminista
+colectivo feminista
+marcha feminista
+manifestación feminista
+manifestacion feminista
+sororidad
+paridad
+mujeres políticas
+mujeres politicas
+mujeres científicas
+mujeres cientificas
+mujeres trabajadoras
+
+[expresiones_coloquiales_o_potencialmente_despectivas]
+puta
+putas
+zorra
+zorras
+perra
+perras
+guarra
+guarras
+arpía
+arpias
+bruja
+brujas
+histérica
+histerica
+mandona
+mandonas
+loca
+locas
+solterona
+solteronas
+marimacho
+machorra
+feminazi
+hembrista
+hembristas
+chismosa
+chismosas
+cotilla
+cotillas
+calientabraguetas
+mantenida
+mantenidas
+objeto sexual
+objeto de deseo
+sexo débil
+sexo debil
+cállate mujer
+callate mujer
+vete a la cocina
+mujer tenías que ser
+mujer tenias que ser
+
+[relaciones_y_contextos]
+madre e hija
+madres e hijas
+padre y madre
+hombre y mujer
+hombres y mujeres
+niño y niña
+niños y niñas
+esposa y marido
+marido y mujer
+pareja heterosexual
+mujer trans
+mujeres trans
+mujer lesbiana
+mujeres lesbianas
+mujer bisexual
+mujeres bisexuales
+

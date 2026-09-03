@@ -42,6 +42,25 @@ pip install -r requirements.txt
 - `07_modelo_multimodal.ipynb`
 - `08_evaluacion.ipynb`
 
-## Nota
+## Interfaces de revisión
 
-Esta es una base para comenzar el proyecto. Se recomienda completar cada módulo con funciones específicas del problema de clasificación de memes violentos.
+Las interfaces HTML necesitan un servidor local para cargar los CSV y las imágenes. Ejecuta el siguiente comando desde la raíz del proyecto:
+
+```powershell
+cd C:\Users\santi\Downloads\tesis_violencia_memes EN MI CASO LOCAL
+python -m http.server 8765
+```
+
+Después abre la interfaz correspondiente:
+
+- Revisión exploratoria LGBTIQ+: [revision_visual_lgbtiq.html](dataset/annotations/lgbtiq_exploracion/revision_visual_lgbtiq.html)
+- Revisión exploratoria de mujeres: [revision_mujeres.html](dataset/annotations/mujeres_exploracion/revision_mujeres.html)
+
+También puedes acceder mediante estas URLs:
+
+- `http://localhost:8765/dataset/annotations/lgbtiq_exploracion/revision_visual_lgbtiq.html`
+- `http://localhost:8765/dataset/annotations/mujeres_exploracion/revision_mujeres.html`
+
+Mantén abierta la terminal mientras uses las interfaces. Para detener el servidor, presiona `Ctrl+C`.
+
+¿
